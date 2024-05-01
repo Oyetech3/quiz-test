@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="wclassth=device-wclassth, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="quiz.css">
+</head>
+<body>
+    <div class="allcontainer">
+        <h1>Quiz Test</h1>
+        <p id="hideid">Pick the most correct of the options</p>
+        <div class="questions">
+            <h2 id="quehd">QUESTION:</h2>
+            <p class="que">Click Start to see your Questions</p>
+        </div>
+        <div class="options">
+            <button class="opt">Option 1</button>
+            <button class="opt">Option 2</button>
+            <button class="opt">Option 3</button>
+            <button class="opt">Option 4</button>
+        </div>
+        <div class="btn">
+            <button id="start" onclick="startQuiz()">Start Quiz</button>
+            <button id="next" onclick="nextQuestion()">Next Question</button>
+        </div>
+    </div>
+
+    <script>
+
+        const quiz = [
+        {
+            question : "What is the full meaning of HTML",
+            answers : [
+            {text : "Hypertext Most Language", check : "wrong"},
+            {text : "Higher Text markup Language", check: "wrong"},
+            {text : "Hypertext Markup Language", check : "correct"},
+            {text : "Hypertext Mordern Language", check :'wrong'}
+            ]
+        },
+        {
+            question : "Which of these is a frontend Language",
+            answers : [
+            {text : "JavaScript", check : "correct"},
+            {text : "Python", check: "wrong"},
+            {text : "Ruby", check : "wrong"},
+            {text : "PHP", check :'wrong'}
+            ]
+        },
+        {
+            question : "All these are programming lamguage except",
+            answers : [
+            {text : "HTML", check : "correct"},
+            {text : "JavaScript", check: "wrong"},
+            {text : "Angular", check : "wrong"},
+            {text : "Objective C", check :'wrong'}
+            ]
+        },
+        {
+            question : "What is the full meaning of JSON",
+            answers : [
+            {text : "JavaScript Order Names", check : "wrong"},
+            {text : "JavaScript Outer Notation", check: "wrong"},
+            {text : "JavaScript Object Names", check : "wrong"},
+            {text : "JavaScript Object Notation", check :'correct'}
+            ]
+        },
+        {
+            question : "All these are Object Oriented except",
+            answers : [
+            {text : "Java", check : "wrong"},
+            {text : "Python", check: "wrong"},
+            {text : "C language", check : "correct"},
+            {text : "C++", check :'wrong'}
+            ]
+        },
+         {
+            question : "What is thef full meaning of DOM",
+            answers : [
+            {text : "Direct Object Model", check : "wrong"},
+            {text : "Document Object Model", check: "correct"},
+            {text : "Document Object Markup", check : "wrong"},
+            {text : "Document Option Model", check :'wrong'}
+            ]
+        },
+         {
+            question : "All these are used to declare variables in JS except",
+            answers : [
+            {text : "var", check : "wrong"},
+            {text : "let", check: "wrong"},
+            {text : "const", check : "wrong"},
+            {text : "$", check :'correct'}
+            ]
+        },
+         {
+            question : "Which of these is not a database language",
+            answers : [
+            {text : "MySQL", check : "wrong"},
+            {text : "SQL", check: "wrong"},
+            {text : "NoSQL", check : "wrong"},
+            {text : "PosterSQL", check :'correct'}
+            ]
+        },
+        {
+            question : "",
+            answers : []
+        }
+        ]
+
+        const initialquestion = document.querySelector('.questions .que')
+        const options = document.querySelectorAll('.opt')
+        const next = document.getElementById('next')
+        const start = document.getElementById('start')
+        let questionindex = 0
+        let just = 0
+        let num = 1
+        let score = 0
+       
+        const optdiv = document.querySelector('.options')
+        const hidehd = document.getElementById("pick")
+        const changeHd = document.getElementById("quehd")
+        next.disabled = true
+        
+        //hide next button
+        next.style.display = "none"
+        //hide options
+        optdiv.style.display = "none"
+
+        function startQuiz() {
+            let quizquestions =  quiz[questionindex]
+            const getquestion = quizquestions.question
+            const answer = quizquestions.answers
+            //questionindex++
+            just++
+            initialquestion.innerHTML = num + '.' + getquestion
+             //option display
+            const optchildren = optdiv.children
+             answer.forEach(val => {
+            const but = document.createElement("button")
+            but.innerHTML = val.text
+            but.classList.add('opt')
+            optdiv.appendChild(but)
+
+
+            if(val.check) {
+                but.dataset.check = val.check
+            }
+           but.addEventListener("click",answerClick)
+           optdiv.style.display = "block"
+          next.style.display = "block"
+        
+        })
+
+        
+        start.style.visibility = "hidden"
+        //hiding the previous buttons
+        
+        for(let i = 3; i < optchildren.length; i--) {
+            optchildren[i].style.display = 'none'
+        }
+        
+    }
+
+    
+    function nextQuestion() {
+        next.disabled = true
+        if(just > 0 ) {
+        questionindex++
+        num++
+        let quizquestions =  quiz[questionindex]
+        const getquestion = quizquestions.question
+        const answer = quizquestions.answers
+        const optchildren = optdiv.children
+       
+        for(let i = 0; i < optchildren.length; i++) {
+            optchildren[i].style.display = 'none'
+        }
+        
+        answer.forEach(val => {
+            const but = document.createElement("button")
+            but.innerHTML = val.text
+            but.classList.add('opt')
+            optdiv.appendChild(but)
+            if(val.check) {
+                but.dataset.check = val.check
+            }
+            but.addEventListener("click",answerClick)
+            
+        })
+
+        initialquestion.innerHTML = num + "." + getquestion
+        
+
+        if(questionindex == 7) {
+            next.innerHTML = "See Result"
+        }
+       
+        }
+        
+        if(num > 8 ) {
+            let quizquestions = 'Your score is ' + score + " out of 8 "
+            changeHd.innerHTML  = "SCORE :"
+            initialquestion.innerHTML = quizquestions
+            optdiv.style.display = "none"
+            next.style.display = 'none'
+            start.style.visibility = "visible"
+            start.innerHTML = 'Restart'
+            start.addEventListener("click", reStart)
+           // next.style.display = ""
+        }
+
+    } 
+
+    function reStart() {
+        next.disabled = true
+        questionindex = 0
+        score = 0
+        num = 1
+        let quizquestions =  quiz[questionindex]
+        const getquestion = quizquestions.question
+        const answer = quizquestions.answers
+        //questionindex++
+        initialquestion.innerHTML = num + '.' + getquestion
+         //option display
+        const optchildren = optdiv.children
+         answer.forEach(val => {
+        const but = document.createElement("button")
+        but.innerHTML = val.text
+        but.classList.add('opt')
+        optdiv.appendChild(but)
+
+
+        if(val.check) {
+            but.dataset.check = val.check
+        }
+       but.addEventListener("click",answerClick)
+       optdiv.style.display = "block"
+       next.style.display = "block"
+    
+    })
+   
+       next.innerHTML = 'Next Question'
+
+    
+    start.style.visibility = "hidden"
+    //hiding the previous buttons
+    
+    }
+    
+       
+    function answerClick(event) {
+        const state = event.target
+        const isCorrect = state.dataset.check == "correct"
+        next.disabled = false
+        
+        if(isCorrect) {
+            state.classList.add("correct")
+            score += 1
+        }
+        
+        else {
+            state.classList.add("wrong")
+        }
+       
+       Array.from(optdiv.children).forEach(btn => {
+        if(btn.dataset.check == "correct") {
+            btn.classList.add("correct")
+        }
+        btn.disabled = true
+        btn.classList.add("disabled")
+        btn.style.color = "black"
+       })
+    
+}
+
+   
+
+
+    </script>
+</body>
+</html>
