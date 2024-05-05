@@ -5,6 +5,7 @@
 }
 body {
     background-color: rgb(26, 24, 24);
+    width: 100vw;
 }
 .allcontainer {
     position: relative;
